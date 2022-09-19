@@ -2,6 +2,8 @@ const jwt = require('jsonwebtoken')
 const blogModel = require('../models/blogModel')
 const mongoose = require('mongoose')
 
+// =====================Authentication =======================
+
 const authentication = function (req, res, next) {
     try {
       let token = req.headers["x-api-key"]
@@ -10,7 +12,7 @@ const authentication = function (req, res, next) {
       }else{
         const validToken = jwt.decode(token)
         if(validToken){
-            jwt.verify(token,"project-1")   
+          jwt.verify(token, process.env.SECRET_KET)   
         }
         req.decodedToken = validToken;
       }
@@ -23,7 +25,11 @@ const authentication = function (req, res, next) {
     }
   };
 
-  const authorisation = async function (req, res, next) {
+
+
+  // ========================Authorization========================
+
+  const authorizations = async function (req, res, next) {
     try {
       const blogId = req.params.blogId;
       if(!mongoose.Types.ObjectId.isValid(blogId)) return res.status(400).send({msg:"blog_id is not valid"})
@@ -47,6 +53,6 @@ const authentication = function (req, res, next) {
   
 
 
-
-  module.exports.authentication = authentication
-  module.exports.authorisation = authorisation
+// Destructuring 
+module.exports = { authentication, authorizations } 
+ 

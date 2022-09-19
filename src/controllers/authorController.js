@@ -2,7 +2,9 @@ const jwt = require("jsonwebtoken");
 const authorModel = require("../models/authorModel")
 const VALIDATOR = require("../validator/validate")
 
-//.....................................................................create Author................................................
+
+
+//=======================> create Author <========================
 
 const createAuthor = async function (req, res) {
 
@@ -48,7 +50,7 @@ const createAuthor = async function (req, res) {
 }
 
 
-// ...........................................................Login user............................................................
+// ===============================> Login user <===========================
 
 const loginUser = async function (req, res) {
   try {
@@ -68,18 +70,18 @@ const loginUser = async function (req, res) {
         batch: "plutonium",
         organisation: "FunctionUp",
       },
-      "project-1"
+      process.env.SECRET_KET
     );
     res.status(200).send({ status: true, token: token });
-    console.log(token)
+    console.log(token);
   } catch (err) {
-    console.log("This is the error:", err.message)
-    res.status(500).send({ msg: "Error", error: err.message })
+    console.log("This is the error:", err.message);
+    res.status(500).send({ msg: "Error", error: err.message });
   }
 
-}
+};
 
 
 
-module.exports.createAuthor = createAuthor
-module.exports.loginUser = loginUser
+module.exports = {createAuthor, loginUser}
+
